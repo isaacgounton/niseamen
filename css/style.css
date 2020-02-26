@@ -1,0 +1,132 @@
+@-moz-document url-prefix() {
+  fieldset { display: table-cell; }
+}
+
+body {
+		background-image: url("../images/FocusAreaB.jpg");
+		font-family: 'Trebuchet MS', Arial, sans-serif;
+		color: #181818;
+		margin: 0;
+}
+		
+@-moz-document url-prefix() {
+  fieldset { display: table-cell; }
+}
+
+p {
+	font-size: 14px;
+}
+
+h1 {
+		text-align: center;
+	}
+
+.table {
+		margin: auto;
+		font-size: auto;
+		text-align: center;
+		overflow-y: hidden;
+		width: 100%; 
+		border-collapse: collapse; 
+
+	}
+	
+/* Zebra striping */
+tr:nth-of-type(odd) { 
+  background: #eee; 
+}
+th { 
+  background: #333; 
+  color: white; 
+  font-weight: bold; 
+}
+td, th { 
+  padding: 6px; 
+  border: 1px solid #ccc; 
+  text-align: left; 
+}
+td {
+		width: 70px;
+		height: 65px;
+	}
+	
+.jumbotron {
+		background-color: f2f8fa;
+		background-image: url("../images/ChannelMask02.jpg");
+		font-family: 'Trebuchet MS', Arial, sans-serif;
+	}
+td:hover {
+		border: 1px solid grey;
+		color: blue;
+		text-decoration: none;
+	}
+a:hover {
+		color: yellow;
+		text-decoration: none;
+	}
+	
+.vertical {
+		border-left: 1px solid black;
+		border-right: 1px solid black;
+	}
+
+.horizontal {
+		border-top: 1px solid black;
+		border-bottom: 1px solid black;
+	}
+
+.table-responsive {
+	overflow-y: hidden;
+}
+#pageone {
+	background-image: url("../images/FocusArea6.jpg");
+}
+
+#page1 {
+	color: green;
+}
+
+#page2 {
+	background-color: f2f8fa;
+	color: green;
+}
+
+#page3 {
+	background-color: f2f8fa;
+	color: green;
+}
+
+#page4 {
+	background-color: f2f8fa;
+	color: green;
+}
+
+#page5 {
+	background-color: f2f8fa;
+	color: green;
+}
+
+#page6 {
+	background-color: f2f8fa;
+	color: green;
+
+#page7 {
+	background-color: f2f8fa;
+	color: green;
+}
+
+#page8 {
+	background-color: f2f8fa;
+	color: green;
+}
+
+#page9 {
+	background-color: f2f8fa;
+	color: green;
+}
+
+#page11 {
+	background-color: f2f8fa;
+	color: green;
+}
+
