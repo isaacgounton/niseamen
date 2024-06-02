@@ -65,7 +65,7 @@ const songDataBase = [
     "previewImgSrc": "./images/cantiques/Cantique_24.png"
   },
   {
-    "songSrc": "./nmusic/002 Cantique ECC.mp3",
+    "songSrc": "./nmusic/002-cantique-ecc.mp3",
     "title": "002 - Yarasarah",
     "artist": "Église du christianisme céleste",
     "imgSrc": "./img/CantiqueECC.webp",
