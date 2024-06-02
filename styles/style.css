@@ -100,8 +100,8 @@ body {
   margin: 0px 0px 20px 0px;
 }
 
-#AllInBody #ContentWarpper #WholeCardContainer #MusicDesc h2 {
-  font-size: 2rem;
+#AllInBody #ContentWarpper #WholeCardContainer #MusicDesc h6 {
+  font-size: 1rem;
   font-family: 'Reggae One', cursive;
   color: #fc0093;
   text-shadow: 1px 1px 2px black;
