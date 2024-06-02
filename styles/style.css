@@ -120,7 +120,7 @@ body {
   padding: 20px 0px 0px 0px;
   justify-content: space-around;
   align-items: center;
-  margin-top: 20px; /* Ajouté pour séparer les contrôles du sélecteur */
+  margin-top: 5px; /* Ajouté pour séparer les contrôles du sélecteur */
 }
 
 #AllInBody #ContentWarpper #WholeCardContainer #MusicControls div {
