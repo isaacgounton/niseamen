@@ -3,16 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="NiseAmen - CCC Hymns">
-    <link rel="apple-touch-icon" sizes="192x192" href="icons/icon-192x192.png">
-    <link rel="apple-touch-icon" sizes="512x512" href="icons/icon-512x512.png">
-  <meta
-    name="description"
-    content="NiseAmen - Recueil des cantiques de l'Église du Christianisme Céleste"
-  />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="NiseAmen - CCC Hymns">
+  <link rel="apple-touch-icon" sizes="192x192" href="icons/icon-192x192.png">
+  <link rel="apple-touch-icon" sizes="512x512" href="icons/icon-512x512.png">
+  <meta name="description" content="NiseAmen - Recueil des cantiques de l'Église du Christianisme Céleste" />
   <meta name="theme-color" content="#0000FF">
   <link rel="manifest" href="/manifest.json" type="application/manifest+json">
   <link rel="shortcut icon" href="icons/icon-72x72.png" type="image/png" />
@@ -26,13 +23,16 @@
     <div id="ContentWarpper">
       <div id="WholeCardContainer">
         <button id="installButton" style="display: none;">Installer l'App</button>
-        <div id="MusicDesc">
-          <h2 id="SongName">Default Song Name</h2>
-          <p id="Artist"></p>
+        <div class="container">
+          <div id="MusicDesc">
+            <h6 id="SongName">Default Song Name</h6>
+            <p id="Artist"></p>
+          </div>
+          <div id="MusicImg">
+            <img draggable="false" id="SongImg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="NiseAmen" />
+          </div>
         </div>
-        <div id="MusicImg">
-          <img draggable="false" id="SongImg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="NiseAmen" />
-        </div>
+      
         <audio></audio>
 
         <div id="Progress_elements">
@@ -56,13 +56,15 @@
             <i id="Next" class="fas fa-forward"></i>
           </div>
         </div>
+        <div id="PreviewImageContainer" style="margin-top:5%;text-align:center">
+          <img id="PreviewImage" src="" alt="Preview Image" style="width: 50%; height: auto;">
+        </div>
         <div>
-          <!-- Add a select dropdown for song selection -->
           <select id="songSelect">
-          <option value="-1">Selectionner un numéro</option>
-          <!-- Populate options dynamically using JavaScript -->
+            <option value="-1">Selectionner un numéro</option>
           </select>
         </div>
+        
       </div>
     </div>
   </section>
