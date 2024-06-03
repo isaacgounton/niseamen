@@ -58,6 +58,7 @@ let index = 0;
 
 const songDataBase = [
   {
+<<<<<<< HEAD
     "songSrc": "./music/001-cantique-ecc.mp3",
     "title": "001 - Jerimoyamah",
     "artist": "Église du christianisme céleste",
@@ -2530,6 +2531,22 @@ const songDataBase = [
   }  
 ];
 
+=======
+    "songSrc": "./nmusic/001-cantique-ecc.mp3",
+    "title": "001 - Jerimoyamah",
+    "artist": "Église du christianisme céleste",
+    "imgSrc": "./img/CantiqueECC.webp",
+    "previewImgSrc": "./images/cantiques/Cantique_24.png"
+  },
+  {
+    "songSrc": "./nmusic/002-cantique-ecc.mp3",
+    "title": "002 - Yarasarah",
+    "artist": "Église du christianisme céleste",
+    "imgSrc": "./img/CantiqueECC.webp",
+    "previewImgSrc": "./images/cantiques/Cantique_08.png"
+  }
+];
+>>>>>>> 8e3bf1338372bd6b8d44a90b0dc014b8e1e89666
 
 const loadMusic = () => {
   audio.src = songDataBase[index].songSrc;
