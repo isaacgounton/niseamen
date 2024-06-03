@@ -58,14 +58,14 @@ let index = 0;
 
 const songDataBase = [
   {
-    "songSrc": "./nmusic/001-cantique-ecc.mp3",
+    "songSrc": "./music/001-cantique-ecc.mp3",
     "title": "001 - Jerimoyamah",
     "artist": "Église du christianisme céleste",
     "imgSrc": "./img/CantiqueECC.webp",
     "previewImgSrc": "./images/cantiques/Cantique_01.png"
   },
   {
-    "songSrc": "./nmusic/002-cantique-ecc.mp3",
+    "songSrc": "./music/002-cantique-ecc.mp3",
     "title": "002 - Yarasarah",
     "artist": "Église du christianisme céleste",
     "imgSrc": "./img/CantiqueECC.webp",
@@ -2609,7 +2609,7 @@ progressBar.addEventListener("click", (event) => {
 
 document.querySelector("#Year").innerHTML = currentYear;
 
-mainCard.addEventListener("mouseover", (event) => {
+/*mainCard.addEventListener("mouseover", (event) => {
   const xAxis = (window.innerWidth / 2 - event.pageX) / 15;
   const yAxis = (window.innerHeight / 2 - event.pageY) / 15;
   mainCard.style.transform = `rotateX(${yAxis}deg) rotateY(${xAxis}deg)`;
@@ -2621,7 +2621,7 @@ mainCard.addEventListener("mouseleave", () => {
   mainCard.style.transform = "rotateX(0deg) rotateY(0deg)";
   songImg.style.transform = "rotate(0deg)";
   controlButtons.style.transform = "rotate(0deg)";
-});
+});*/
 
 // Songselect
 const songSelect = document.getElementById("songSelect");

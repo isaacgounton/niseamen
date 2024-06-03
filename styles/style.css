@@ -55,16 +55,16 @@ body {
 }
 
 #SongImg {
-  width: 50px; /* Ajustez la taille de l'image selon vos besoins */
-  height: auto;
+  width: 30px; /* Ajustez la taille de l'image selon vos besoins */
+  height: 30px;
 }
 
 #AllInBody #ContentWarpper {
-  width: 25vw;
+  width: 35vw;
   min-height: 70vh;
   border-radius: 10px;
   box-shadow: 1px 2px 10px #141414;
-  padding: 20px 10px;
+  padding: 10px 10px 20px 10px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -76,19 +76,19 @@ body {
 #AllInBody #ContentWarpper #WholeCardContainer {
   width: 100%;
   text-align: center;
-  padding: 10px 0px;
+  padding: 0px 0px;
 }
 
 #AllInBody #ContentWarpper #WholeCardContainer #MusicImg {
   width: 150px;
   height: 150px;
-  margin: 10px auto;
+  margin: 5px auto;
   overflow: hidden;
 }
 
 #AllInBody #ContentWarpper #WholeCardContainer #MusicImg img {
-  width: 100%;
-  height: 100%;
+  width: 80%;
+  height: 80%;
   border-radius: 100%;
   border: 5px solid #ff006a;
   object-fit: cover;
@@ -117,10 +117,10 @@ body {
 
 #AllInBody #ContentWarpper #WholeCardContainer #MusicControls {
   display: flex;
-  padding: 20px 0px 0px 0px;
+  padding: 5px 0px 0px 0px;
   justify-content: space-around;
   align-items: center;
-  margin-top: 5px; /* Ajouté pour séparer les contrôles du sélecteur */
+  margin-top: 1px; /* Ajouté pour séparer les contrôles du sélecteur */
 }
 
 #AllInBody #ContentWarpper #WholeCardContainer #MusicControls div {
@@ -154,9 +154,10 @@ body {
 }
 
 #AllInBody #ContentWarpper #Progress_elements {
-  padding: 2px 0px;
+  /*padding: 2px 0px;*/
   background: linear-gradient(to left, #00eeff, #ff006a);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   font-family: 'Goldman', cursive;
   font-weight: 900;
@@ -174,7 +175,7 @@ body {
   height: 7px;
   background: white;
   border-radius: 50px;
-  margin: 20px auto 5px auto;
+  margin: 10px auto 5px auto;
   cursor: pointer;
 }
 
@@ -187,7 +188,7 @@ body {
 
 footer {
   background: #ff0077;
-  padding: 5px 0px;
+  /*padding: 5px 0px;*/
   text-align: center;
   color: white;
 }
@@ -235,9 +236,9 @@ footer a {
 }
 
 #songSelect {
-  width: 100%;
-  padding: 10px;
-  margin-top: 20px;
+  width: 90%;
+  padding: 5px;
+  margin-top: 10px;
   border-radius: 5px;
   border: 1px solid #ccc;
   background: linear-gradient(45deg, rgba(0, 238, 255, 0.842), rgba(255, 0, 149, 0.651)); /* Applique le même dégradé de couleurs que la boîte principale */
@@ -251,19 +252,21 @@ footer a {
 
 /* Style de l'option sélectionnée */
 #songSelect option {
-  padding: 5px;
+  padding: 20px;
   background-color: #fff; /* Assurez-vous que l'option sélectionnée ait un fond blanc */
   color: #333; /* Assurez-vous que le texte de l'option sélectionnée soit visible */
   text-align: center; /* Centrer le texte des options */
 }
 
 #PreviewImageContainer {
-  margin-top: 20px;
+  width: 100%;
+  height: auto;
+  margin-top: 10px;
   text-align: center;
 }
 
 #PreviewImage {
-  max-width: 100%;
+  width: 70%;
   height: auto;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
@@ -296,8 +299,3 @@ footer a {
   #AllInBody #ContentWarpper #Progress_elements #Progressduration {
     font-size: 0.8rem;
   }
-
-  #songSelect {
-    font-size: 14px;
-  }
-}
