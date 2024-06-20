@@ -380,7 +380,7 @@ const songDataBase = [
     "previewImgSrc": "./images/cantiques/Cantique_46.png"
   },
   {
-    "songSrc": "./music/046bis-cantique-ecc.mp3",
+    "songSrc": "./music/046-bis-cantique-ecc.mp3",
     "title": "046bis - Mi gbo mi dopè na Oto",
     "artist": "Église du christianisme céleste",
     "imgSrc": "./img/CantiqueECC.webp",
