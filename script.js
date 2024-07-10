@@ -164,7 +164,7 @@ const songDataBase = [
   },
   {
       "songSrc": "./music/016 Cantique ECC.mp3",
-      "title": "016 - Pè wè jè mi ni do na To whe po sun po tin hinhon",
+      "title": "016 - Pè wè jè mi ni do na To",
       "artist": "Église du christianisme céleste",
       "imgSrc": "./img/CantiqueECC.webp",
       "previewImgSrc": "./images/cantiques/Cantique_016.png"
