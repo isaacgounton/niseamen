@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NiseAmen, Les chants Céleste</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Apple meta tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="NiseAmen - CCC Hymns">
+  
+  <!-- Icons for Apple and other platforms -->
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-192x192.png">
+  <link rel="apple-touch-icon" sizes="192x192" href="icons/icon-192x192.png">
+  <link rel="apple-touch-icon" sizes="512x512" href="icons/icon-512x512.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512x512.png">
+  <link rel="shortcut icon" href="icons/icon-72x72.png" type="image/png">
+  
+  <!-- Manifest file -->
+  <link rel="manifest" href="/manifest.json" type="application/manifest+json">
+  
+  <!-- Additional meta tags -->
+  <meta name="description" content="NiseAmen - Recueil des cantiques de l'Église du Christianisme Céleste" />
+  <meta name="theme-color" content="#0000FF">
+  
+  <!-- Stylesheets and scripts -->
+  <link rel="stylesheet" href="./styles/styles.css" />
+  <script src="https://kit.fontawesome.com/585143586a.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="player">
+    <div class="song-info">
+      <div class="song-details">
+        <button id="installButton" style="display: none;">Installer l'app</button>
+        <div class="title" id="song-title">Song Name</div>
+        <div class="artist" id="song-artist">Église du christianisme céleste</div>
+      </div>
+      <div class="album-art">
+        <img id="album-art" src="./img/CantiqueECC.webp" alt="CCC Founder" width="60" height="60">
+      </div>
+    </div>
+    
+    <div class="progress-container" onclick="seek(event)">
+      <div class="progress"></div>
+    </div>
+    <div class="time">
+      <span id="current-time">0:00</span>
+      <span id="duration">0:00</span>
+    </div>
+    
+    <div class="controls">
+      <button class="control-btn" onclick="previousTrack()">⏮</button>
+      <button class="play-pause" onclick="togglePlay()">▶</button>
+      <button class="control-btn" onclick="nextTrack()">⏭</button>
+    </div>
+    
+    <div class="lyrics" id="lyrics">
+      <p>Lyrics</p>
+    </div>
+    
+    <div class="search-container">
+      <input type="text" class="search-input" placeholder="Rechercher ..." oninput="searchSongs(this.value)">
+    </div>
+    
+    <div class="playlist" id="playlist">
+      <!-- Playlist items will be dynamically added here -->
+    </div>
+  </div>
+  <script defer src="script.js"></script>
+</body>
+</html>
