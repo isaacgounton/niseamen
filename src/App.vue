@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-purple-800 to-purple-600">
+  <div class="min-h-screen bg-gradient-to-br from-purple-800 to-purple-600 flex flex-col">
     <nav class="bg-blue-600 text-white p-4 sticky top-0 z-50">
       <div class="container mx-auto flex justify-between items-center">
         <div class="flex space-x-6">
@@ -7,7 +7,7 @@
             v-for="item in menuItems" 
             :key="item.text"
             :to="item.path"
-            class="hover:text-blue-200 transition-colors cursor-pointer"
+            class="hover:text-blue-200 transition-colors cursor-pointer text-lg font-medium"
           >
             {{ item.text }}
           </router-link>
@@ -17,16 +17,16 @@
         <div v-if="!user">
           <button 
             @click="signIn" 
-            class="flex items-center space-x-2 bg-white text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors"
+            class="flex items-center space-x-2 bg-white text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-100 transition-colors font-medium"
           >
             <span>Sign In</span>
           </button>
         </div>
         <div v-else class="flex items-center space-x-4">
-          <span>{{ user.displayName }}</span>
+          <span class="text-sm">{{ user.displayName }}</span>
           <button 
             @click="signOut"
-            class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors"
+            class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors font-medium"
           >
             Sign Out
           </button>
@@ -34,7 +34,7 @@
       </div>
     </nav>
 
-    <main class="container mx-auto p-4">
+    <main class="flex-grow container mx-auto p-4 flex-col">
       <router-view 
         :songs="songs"
         :currentSong="currentSong"
