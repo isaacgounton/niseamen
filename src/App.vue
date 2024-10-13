@@ -19,7 +19,7 @@
             @click="signIn" 
             class="flex items-center space-x-2 bg-white text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors"
           >
-            <span>Sign in with Google</span>
+            <span>Sign In</span>
           </button>
         </div>
         <div v-else class="flex items-center space-x-4">
@@ -54,16 +54,17 @@
 </template>
   
 <script>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
-import { auth } from './firebase'
-import { songService } from './services/firebase'
+import { auth, storage } from './firebase'
 import { 
   signInWithPopup, 
   GoogleAuthProvider,
   signOut as firebaseSignOut,
   onAuthStateChanged
 } from 'firebase/auth'
+import { getDownloadURL, ref as storageRef } from 'firebase/storage'
+import { songService } from './services/firebase'
 
 export default {
   name: 'App',
@@ -75,7 +76,7 @@ export default {
     const songs = ref([])
     const currentSong = ref(null)
     const currentLyrics = ref(null)
-    const audio = ref(new Audio())
+    const audio = ref(null)
     const isPlaying = ref(false)
     const currentTime = ref(0)
     const duration = ref(0)
@@ -89,17 +90,36 @@ export default {
     ]
 
 
-    const restoreLastPlayed = async (userId) => {
+    const initializeAudio = () => {
+      if (!audio.value) {
+        audio.value = new Audio()
+        audio.value.preload = 'metadata'
+
+        audio.value.addEventListener('timeupdate', () => {
+          currentTime.value = audio.value.currentTime
+        })
+
+        audio.value.addEventListener('loadedmetadata', () => {
+          duration.value = audio.value.duration
+        })
+
+        audio.value.addEventListener('ended', nextTrack)
+      }
+    }
+
+
+    const restoreLastPlayed = async () => {
+      if (user.value) {
         try {
-          const lastPlayed = await songService.getLastPlayed(userId)
+          const lastPlayed = await songService.getLastPlayed(user.value.uid)
           if (lastPlayed) {
             const song = songs.value.find(s => s.id === lastPlayed.songId)
             if (song) {
               currentSong.value = song
               audio.value.src = song.url
-              
-              // Wait for audio metadata to load before setting time
-              audio.value.addEventListener('loadedmetadata', () => {
+          
+          // Wait for audio metadata to load before setting time
+          audio.value.addEventListener('loadedmetadata', () => {
                 audio.value.currentTime = lastPlayed.progress
               }, { once: true })
 
@@ -110,18 +130,23 @@ export default {
           console.error('Error restoring last played song:', error)
         }
       }
+    }
 
-      // New method to save current state
-      const saveCurrentState = async () => {
-        if (user.value && currentSong.value) {
+
+    const saveCurrentState = async () => {
+      if (user.value && currentSong.value) {
+        try {
           await songService.saveLastPlayed(
             user.value.uid,
             currentSong.value.id,
             audio.value.currentTime,
             Date.now()
           )
+        } catch (error) {
+          console.error('Error saving current state:', error)
         }
-      }          
+      }
+    }
 
       
     // Computed
@@ -153,46 +178,80 @@ export default {
       try {
         songs.value = await songService.fetchSongs()
         
-        if (user.value) {
-          await restoreLastPlayed(user.value.uid)
-        }
-        
         if (!currentSong.value && songs.value.length > 0) {
           currentSong.value = songs.value[0]
-          audio.value.src = songs.value[0].url
+          if (audio.value) {
+            const musicRef = storageRef(storage, songs.value[0].url)
+            const downloadURL = await getDownloadURL(musicRef)
+            audio.value.src = downloadURL
+          }
           await loadLyrics(songs.value[0].id)
         }
       } catch (error) {
-        console.error('Error loading songs:', error)
+        console.error("Error loading songs:", error)
+        // Handle the error (e.g., show a message to the user)
       }
     }
+
 
     const loadLyrics = async (songId) => {
       try {
         currentLyrics.value = await songService.fetchLyrics(songId)
       } catch (error) {
         console.error('Error loading lyrics:', error)
+        currentLyrics.value = "Lyrics not available for this song."
       }
     }
 
     const playSong = async (song) => {
+      initializeAudio() // Ensure audio is initialized
       currentSong.value = song
-      audio.value.src = song.url
-      audio.value.play()
-      isPlaying.value = true
+      
+      try {
+        // Get the download URL from Firebase Storage
+        const musicRef = storageRef(storage, song.url)
+        const downloadURL = await getDownloadURL(musicRef)
+        
+        audio.value.src = downloadURL
+        await audio.value.play()
+        isPlaying.value = true
+      } catch (error) {
+        console.error('Error playing audio:', error)
+        isPlaying.value = false
+        // Handle the error (e.g., show a message to the user)
+        alert('Failed to play the song. Please try again later.')
+      }
       await loadLyrics(song.id)
     }
 
+
     const togglePlay = async () => {
-      if (audio.value.paused) {
-        audio.value.play()
-        isPlaying.value = true
-      } else {
-        audio.value.pause()
-        isPlaying.value = false
-        await saveCurrentState()
+      if (!audio.value) return
+      
+      try {
+        if (audio.value.paused) {
+          await audio.value.play()
+          isPlaying.value = true
+        } else {
+          audio.value.pause()
+          isPlaying.value = false
+          await saveCurrentState()
+        }
+      } catch (error) {
+        console.error('Error toggling play:', error)
       }
     }
+
+
+    // Add a watch for isPlaying to handle state changes
+    watch(isPlaying, (newIsPlaying) => {
+      if (newIsPlaying && audio.value && audio.value.paused) {
+        audio.value.play().catch(error => console.error('Error playing audio:', error))
+      } else if (!newIsPlaying && audio.value && !audio.value.paused) {
+        audio.value.pause()
+      }
+    })
+
 
     const previousTrack = () => {
       const currentIndex = songs.value.findIndex(s => s.id === currentSong.value?.id)
@@ -221,41 +280,49 @@ export default {
 
     // Lifecycle
     onMounted(() => {
+      initializeAudio() // Initialize audio on component mount
       loadSongs()
 
       onAuthStateChanged(auth, async (userData) => {
         user.value = userData
         if (userData) {
-          await restoreLastPlayed(userData.uid)
+          await restoreLastPlayed()
         }
       })
 
+      // Event listener for saving state before unload
       window.addEventListener('beforeunload', saveCurrentState)
+
+      // Event listener for saving state when page becomes hidden
       document.addEventListener('visibilitychange', () => {
         if (document.visibilityState === 'hidden') {
           saveCurrentState()
         }
       })
 
-      audio.value.addEventListener('timeupdate', () => {
-        currentTime.value = audio.value.currentTime
-      })
-
-      audio.value.addEventListener('loadedmetadata', () => {
-        duration.value = audio.value.duration
-      })
-
-      audio.value.addEventListener('ended', nextTrack)
-
+      // Cleanup function
       return () => {
+        // Remove event listeners
         window.removeEventListener('beforeunload', saveCurrentState)
         document.removeEventListener('visibilitychange', saveCurrentState)
-        audio.value.removeEventListener('timeupdate', null)
-        audio.value.removeEventListener('loadedmetadata', null)
-        audio.value.removeEventListener('ended', nextTrack)
+
+        // Clean up audio event listeners
+        if (audio.value) {
+          audio.value.removeEventListener('timeupdate', null)
+          audio.value.removeEventListener('loadedmetadata', null)
+          audio.value.removeEventListener('ended', nextTrack)
+        }
+
+        // If there's an ongoing audio playback, pause it
+        if (audio.value && !audio.value.paused) {
+          audio.value.pause()
+        }
+
+        // Save the current state one last time when component is unmounted
+        saveCurrentState()
       }
     })
-  
+      
       return {
         user,
         menuItems,
@@ -273,7 +340,9 @@ export default {
         togglePlay,
         previousTrack,
         nextTrack,
-        seek
+        seek,
+        audio,
+        loadLyrics
       }
     }
   }

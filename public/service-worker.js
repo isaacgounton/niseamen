@@ -45,22 +45,29 @@ self.addEventListener('activate', function(event) {
 });
 
 self.addEventListener('fetch', function(event) {
-    event.respondWith(
-        caches.match(event.request).then(function(response) {
-            if (response) {
-                return response;
-            }
-            return fetch(event.request).then(function(networkResponse) {
-                // Only cache valid responses
-                if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
-                    return networkResponse;
-                }
-                var responseToCache = networkResponse.clone();
-                caches.open(CACHE_NAME).then(function(cache) {
-                    cache.put(event.request, responseToCache);
-                });
-                return networkResponse;
-            });
-        })
-    );
+    let requestURL = new URL(event.request.url);
+
+    // Only cache HTTP/HTTPS requests
+    if (requestURL.protocol === 'http:' || requestURL.protocol === 'https:') {
+        if (requestURL.pathname === '/') {
+            event.respondWith(caches.match('./index.html').then(function(response) {
+                return response || fetch('./index.html');
+            }));
+        } else {
+            event.respondWith(
+                caches.match(event.request).then(function(response) {
+                    return response || fetch(event.request).then(function(networkResponse) {
+                        if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
+                            return networkResponse;
+                        }
+                        var responseToCache = networkResponse.clone();
+                        caches.open(CACHE_NAME).then(function(cache) {
+                            cache.put(event.request, responseToCache);
+                        });
+                        return networkResponse;
+                    });
+                })
+            );
+        }
+    }
 });
