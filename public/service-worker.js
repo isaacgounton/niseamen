@@ -1,12 +1,11 @@
-const CACHE_NAME = 'niseamen-cache-v1';
+// service-worker.js
+const CACHE_VERSION = 'v2'; // Increment this when you want to force an update
+const CACHE_NAME = `niseamen-cache-${CACHE_VERSION}`;
 const urlsToCache = [
     '/',
     './index.html',
-    './styles/style.css',
-    './styles/style.css.map',
-    './styles/style.scss',
-    './script.js',
-    './images/logo.png',
+    './style.css',
+    './img/CantiqueECC.webp',
     './icons/icon-72x72.png',
     './icons/icon-96x96.png',
     './icons/icon-128x128.png',
@@ -30,12 +29,11 @@ self.addEventListener('install', function(event) {
 });
 
 self.addEventListener('activate', function(event) {
-    var cacheWhitelist = [CACHE_NAME]; // Use the CACHE_NAME constant
     event.waitUntil(
         caches.keys().then(function(cacheNames) {
             return Promise.all(
                 cacheNames.map(function(cacheName) {
-                    if (cacheWhitelist.indexOf(cacheName) === -1) {
+                    if (cacheName.startsWith('niseamen-cache-') && cacheName !== CACHE_NAME) {
                         return caches.delete(cacheName);
                     }
                 })
@@ -69,5 +67,12 @@ self.addEventListener('fetch', function(event) {
                 })
             );
         }
+    }
+});
+
+// Force the waiting service worker to become the active service worker
+self.addEventListener('message', function(event) {
+    if (event.data.action === 'skipWaiting') {
+        self.skipWaiting();
     }
 });

@@ -2,33 +2,34 @@
   <div class="min-h-screen bg-gradient-to-br from-purple-800 to-purple-600 flex flex-col">
     <nav class="bg-blue-600 text-white p-4 sticky top-0 z-50">
       <div class="container mx-auto flex justify-between items-center">
-        <div class="flex space-x-6">
+        <div class="flex space-x-4 overflow-x-auto whitespace-nowrap">
           <router-link 
             v-for="item in menuItems" 
             :key="item.text"
             :to="item.path"
-            class="hover:text-blue-200 transition-colors cursor-pointer text-lg font-medium"
+            class="hover:text-blue-200 transition-colors cursor-pointer text-lg font-medium flex-shrink-0"
           >
             {{ item.text }}
           </router-link>
         </div>
         
         <!-- Auth Section -->
-        <div v-if="!user">
+        <div v-if="!user" class="ml-4 flex-shrink-0">
           <button 
             @click="signIn" 
-            class="flex items-center space-x-2 bg-white text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-100 transition-colors font-medium"
+            class="flex items-center justify-center space-x-2 bg-white text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-100 transition-colors font-medium"
           >
-            <span>Sign In</span>
+            <i class="fas fa-sign-in-alt"></i> <span>Sign In</span>
           </button>
         </div>
-        <div v-else class="flex items-center space-x-4">
-          <span class="text-sm">{{ user.displayName }}</span>
+        <div v-else class="flex items-center space-x-4 ml-4 flex-shrink-0">
+          <img :src="user.photoURL" :alt="user.name" class="user-avatar w-8 h-8 rounded-full">
+          <!-- <span class="text-sm">{{ user.displayName }}</span>-->
           <button 
             @click="signOut"
             class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors font-medium"
           >
-            Sign Out
+            <i class="fas fa-sign-out-alt"></i> Logout
           </button>
         </div>
       </div>
@@ -88,7 +89,31 @@ export default {
       { text: 'Lyrics', path: '/lyrics' },
       { text: 'About', path: '/about' }
     ]
+      
+    // Computed
+    const progress = computed(() => 
+      (currentTime.value / duration.value) * 100 || 0
+    )
 
+    // Methods
+    const signIn = async () => {
+      try {
+        const provider = new GoogleAuthProvider()
+        await signInWithPopup(auth, provider)
+      } catch (error) {
+        console.error('Sign in error:', error)
+      }
+    }
+
+    const signOut = async () => {
+      try {
+        await saveCurrentState()
+        await firebaseSignOut(auth)
+        user.value = null
+      } catch (error) {
+        console.error('Sign out error:', error)
+      }
+    }
 
     const initializeAudio = () => {
       if (!audio.value) {
@@ -116,10 +141,13 @@ export default {
             const song = songs.value.find(s => s.id === lastPlayed.songId)
             if (song) {
               currentSong.value = song
-              audio.value.src = song.url
-          
-          // Wait for audio metadata to load before setting time
-          audio.value.addEventListener('loadedmetadata', () => {
+              // Remove this line: audio.value.src = song.url
+              
+              // Instead, call playSong with autoplay set to false
+              await playSong(song, false)
+              
+              // Set the currentTime after the audio has loaded
+              audio.value.addEventListener('loadedmetadata', () => {
                 audio.value.currentTime = lastPlayed.progress
               }, { once: true })
 
@@ -148,31 +176,6 @@ export default {
       }
     }
 
-      
-    // Computed
-    const progress = computed(() => 
-      (currentTime.value / duration.value) * 100 || 0
-    )
-
-    // Methods
-    const signIn = async () => {
-      try {
-        const provider = new GoogleAuthProvider()
-        await signInWithPopup(auth, provider)
-      } catch (error) {
-        console.error('Sign in error:', error)
-      }
-    }
-
-    const signOut = async () => {
-      try {
-        await saveCurrentState()
-        await firebaseSignOut(auth)
-        user.value = null
-      } catch (error) {
-        console.error('Sign out error:', error)
-      }
-    }
 
     const loadSongs = async () => {
       try {
@@ -203,7 +206,7 @@ export default {
       }
     }
 
-    const playSong = async (song) => {
+    const playSong = async (song, autoplay = true) => {
       initializeAudio() // Ensure audio is initialized
       currentSong.value = song
       
@@ -213,8 +216,10 @@ export default {
         const downloadURL = await getDownloadURL(musicRef)
         
         audio.value.src = downloadURL
-        await audio.value.play()
-        isPlaying.value = true
+        if (autoplay) {
+          await audio.value.play()
+          isPlaying.value = true
+        }
       } catch (error) {
         console.error('Error playing audio:', error)
         isPlaying.value = false
@@ -230,7 +235,12 @@ export default {
       
       try {
         if (audio.value.paused) {
-          await audio.value.play()
+          if (!audio.value.src) {
+            // If no song is loaded, play the current song
+            await playSong(currentSong.value)
+          } else {
+            await audio.value.play()
+          }
           isPlaying.value = true
         } else {
           audio.value.pause()
