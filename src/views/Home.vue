@@ -67,7 +67,7 @@
 
 
      <!-- Playlist -->
-     <div class="bg-white/5 rounded-lg p-4 max-h-96 overflow-y-auto">
+     <div class="bg-white/5 rounded-lg p-4 mb-6 max-h-96 overflow-y-auto">
       <div 
         v-for="song in filteredSongs"
         :key="song.id"

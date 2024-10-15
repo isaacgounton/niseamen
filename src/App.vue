@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen bg-gradient-to-br from-purple-800 to-purple-600 flex flex-col">
     <nav class="bg-blue-600 text-white p-4 sticky top-0 z-50">
-      <div class="container mx-auto flex justify-between items-center">
+      <div class="container mx-auto flex justify-center items-center">
         <div class="flex space-x-4 overflow-x-auto whitespace-nowrap">
           <router-link 
             v-for="item in menuItems" 
@@ -23,8 +23,7 @@
           </button>
         </div>
         <div v-else class="flex items-center space-x-4 ml-4 flex-shrink-0">
-          <img :src="user.photoURL" :alt="user.name" class="user-avatar w-8 h-8 rounded-full">
-          <!-- <span class="text-sm">{{ user.displayName }}</span>-->
+          <img :src="user.photoURL" :alt="user.displayName" class="w-8 h-8 rounded-full">
           <button 
             @click="signOut"
             class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors font-medium"
@@ -44,10 +43,10 @@
         :duration="duration"
         :progress="progress"
         :currentLyrics="currentLyrics"
+        @playSong="playSong"
         @previousTrack="previousTrack"
         @nextTrack="nextTrack"
         @togglePlay="togglePlay"
-        @playSong="playSong"
         @seek="seek"
       ></router-view>
     </main>
